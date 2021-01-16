@@ -26,6 +26,21 @@
         margin: -20px -25px 10px;
         border-radius: 3px 3px 0 0;
     }
-    .table-title .btn {
-        float: right;}
+    .btn{
+        text-align: center;
+        align-items: center;
+    }
+    .btn-success {
+        color: #fff;
+        background-color: #5cb85c;
+        border-color: #4cae4c;
+        }
 
+    .table-title .btn {
+        float: right;
+        display:flex;
+    }
+   
+    
+    
+        
