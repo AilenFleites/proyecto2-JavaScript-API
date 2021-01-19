@@ -20,7 +20,7 @@ const getEmployees = () => {
                 <button type='button' class= "delete" id="${employee.id}"> <i class="material-icons" title="Delete">&#xE872;</i></td></button>`;
                 tbody.appendChild(tr);
             }
-            test()
+            btnListener('delete',deleteEmployee);
         }
         )
 }
@@ -76,16 +76,18 @@ const deleteEmployee = (id) => {
         .then(data => getEmployees());
 }
 
-const test = () => {
-    const btnsDeleteList = document.getElementsByClassName("delete");
-    for (let i = 0; i < btnsDeleteList.length; i++) {
-        btnsDeleteList[i].addEventListener('click', e => {
-            const idEmployee = btnsDeleteList[i].id;
-            console.log(idEmployee)
-            deleteEmployee(idEmployee);
-        });
-    }
-}
+//esta funcion recibe un className y una funcion, recorre un array de botones by classname 
+//y ejecuta la funcion al sucederse el evento "click", enviando el id del boton clickeado a la funcion callback (delete)
+ const btnListener = (className, callback)=>{
+    const btnList = document.getElementsByClassName(className);
+    for(let i = 0; i< btnList.length; i++){
+    btnList[i].addEventListener('click', e =>{
+        const id = btnList[i].id;
+        console.log(id)
+        callback(id);   
+    })
+ }
+ }
 
 const render = () => {
     getEmployees();
