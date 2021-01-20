@@ -100,7 +100,7 @@ render();
 const rightEmail = /\w+@\w+\.+[a-z]/;
 const rightPhone = /^\(?([0-9]{2,4})\)?[- ]?([0-9]{6,8})$/
 
-if ((!rightEmail.test(email)) || (!rightPhone.test(phone)) {
+if ((!rightEmail.test(email)) || (!rightPhone.test(phone))) {
     if (!rightPhone.test(phone)) {
         const phoneInput = document.getElementById('phone');
         phoneInput.style.backgroundColor = 'red';
