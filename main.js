@@ -20,7 +20,7 @@ const getEmployees = () => {
                 <button type='button' class= "delete" id="${employee.id}"> <i class="material-icons" title="Delete">&#xE872;</i></td></button>`;
                 tbody.appendChild(tr);
             }
-            btnListener('delete',deleteEmployee);
+            btnListener('delete', deleteEmployee);
         }
         )
 }
@@ -68,7 +68,7 @@ btnAddEmployee.addEventListener('click', e => {
 });
 
 const deleteEmployee = (id) => {
-    fetch( urlBase + 'users/'+id , {
+    fetch(urlBase + 'users/' + id, {
         method: 'DELETE',
     })
         .then(response => response.json())
@@ -78,19 +78,41 @@ const deleteEmployee = (id) => {
 
 //esta funcion recibe un className y una funcion, recorre un array de botones by classname 
 //y ejecuta la funcion al sucederse el evento "click", enviando el id del boton clickeado a la funcion callback (delete)
- const btnListener = (className, callback)=>{
+const btnListener = (className, callback) => {
     const btnList = document.getElementsByClassName(className);
-    for(let i = 0; i< btnList.length; i++){
-    btnList[i].addEventListener('click', e =>{
-        const id = btnList[i].id;
-        console.log(id)
-        callback(id);   
-    })
- }
- }
+    for (let i = 0; i < btnList.length; i++) {
+        btnList[i].addEventListener('click', e => {
+            const id = btnList[i].id;
+            console.log(id)
+            callback(id);
+        })
+    }
+}
 
 const render = () => {
     getEmployees();
 }
 
 render();
+
+//Para validar
+
+const rightEmail = /\w+@\w+\.+[a-z]/;
+const rightPhone = /^\(?([0-9]{2,4})\)?[- ]?([0-9]{6,8})$/
+
+if ((!rightEmail.test(email)) || (!rightPhone.test(phone)) {
+    if (!rightPhone.test(phone)) {
+        const phoneInput = document.getElementById('phone');
+        phoneInput.style.backgroundColor = 'red';
+    }
+    if (!rightEmail.test(email)) {
+        const emailInput = document.getElementById('email');
+        emailInput.classList.add('error');
+        emailInput.style.backgroundColor = 'red';
+
+
+    }
+} else {
+    return { phone, email }
+}
+
