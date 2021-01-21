@@ -89,11 +89,7 @@ const btnListener = (className, callback) => {
     }
 }
 
-const render = () => {
-    getEmployees();
-}
 
-render();
 
 const rightEmail = /\w+@\w+\.+[a-z]/;
 const rightPhone = /^\(?([0-9]{2,4})\)?[- ]?([0-9]{6,8})$/
@@ -113,3 +109,8 @@ if ((!rightEmail.test(email)) || (!rightPhone.test(phone))) {
     return { phone, email }
 }
 
+const render = () => {
+    getEmployees();
+}
+
+render();
