@@ -67,6 +67,8 @@ btnAddEmployee.addEventListener('click', e => {
     addNewEmployee();
 });
 
+//función del botón delete
+
 const deleteEmployee = (id) => {
     fetch(urlBase + 'users/' + id, {
         method: 'DELETE',
@@ -112,4 +114,3 @@ if ((!rightEmail.test(email)) || (!rightPhone.test(phone))) {
 } else {
     return { phone, email }
 }
-
