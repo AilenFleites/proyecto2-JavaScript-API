@@ -95,8 +95,6 @@ const render = () => {
 
 render();
 
-//Para validar
-
 const rightEmail = /\w+@\w+\.+[a-z]/;
 const rightPhone = /^\(?([0-9]{2,4})\)?[- ]?([0-9]{6,8})$/
 
@@ -109,9 +107,8 @@ if ((!rightEmail.test(email)) || (!rightPhone.test(phone))) {
         const emailInput = document.getElementById('email');
         emailInput.classList.add('error');
         emailInput.style.backgroundColor = 'red';
-
-
     }
+
 } else {
     return { phone, email }
 }
