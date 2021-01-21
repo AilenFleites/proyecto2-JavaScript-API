@@ -17,10 +17,10 @@ const getEmployees = () => {
                 <td> ${employee.email} </td>
                 
                 <td> <button type='button' id="${employee.id}" class= "edit"> <i class="material-icons" title="Edit">&#xE254;</i></button>
-                <button type='button' class= "delete" id="${employee.id}"> <i class="material-icons" title="Delete">&#xE872;</i></td></button>`;
+                <button type='button' onclick="deleteEmployee(${employee.id})" class= "delete" id="${employee.id}"> <i class="material-icons" title="Delete">&#xE872;</i></td></button>`;
                 tbody.appendChild(tr);
             }
-            btnListener('delete', deleteEmployee);
+            //btnListener('delete', deleteEmployee);
         }
         )
 }
@@ -80,7 +80,7 @@ const deleteEmployee = (id) => {
 
 //esta funcion recibe un className y una funcion, recorre un array de botones by classname 
 //y ejecuta la funcion al sucederse el evento "click", enviando el id del boton clickeado a la funcion callback (delete)
-const btnListener = (className, callback) => {
+ /*const btnListener = (className, callback) => {
     const btnList = document.getElementsByClassName(className);
     for (let i = 0; i < btnList.length; i++) {
         btnList[i].addEventListener('click', e => {
@@ -89,7 +89,9 @@ const btnListener = (className, callback) => {
             callback(id);
         })
     }
-}
+}*/
+
+
 
 
 
@@ -108,7 +110,7 @@ if ((!rightEmail.test(email)) || (!rightPhone.test(phone))) {
     }
 
 } else {
-    return { phone, email }
+   // return { phone, email }
 }
 
 const render = () => {
