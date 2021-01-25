@@ -26,6 +26,19 @@
         margin: -20px -25px 10px;
         border-radius: 3px 3px 0 0;
     }
+    .error {
+        background-color: red;
+        border-radius: 0 0 5px 5px;
+        box-sizing: border-box;
+        color: white;
+        font-size: 80%;
+        padding: 0;
+        width : 100%;
+    }     
+    .error.active {
+        display: block;
+        padding: 0.3em;
+    }
     .btn{
         text-align: center;
         align-items: center;
