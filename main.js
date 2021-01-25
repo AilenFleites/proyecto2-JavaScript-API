@@ -17,7 +17,7 @@ const getEmployees = () => {
                 <td> ${employee.email} </td>
                 
                 <td> <button type='button' id="${employee.id}" class= "edit"> <i class="material-icons" title="Edit">&#xE254;</i></button>
-                <button type='button' id="${employee.id}" onclick="deleteEmployee(${employee.id})" class= "delete"> <i class="material-icons" title="Delete">&#xE872;</i></td></button>`;
+                <button type='button' onclick="deleteEmployee()" class= "delete" id="${employee.id}"> <i class="material-icons" title="Delete">&#xE872;</i></td></button>`;
                 tbody.appendChild(tr);
             }
             //btnListener('delete', deleteEmployee);
@@ -242,6 +242,7 @@ const deleteEmployee = (id) => {
 const render = () => {
     //esta es mi funcion render
     getEmployees();
+    filter();
 }
 
 render();
