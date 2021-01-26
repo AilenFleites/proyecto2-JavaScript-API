@@ -1,28 +1,29 @@
 const urlBase = 'https://5ffb628063ea2f0017bdb0ef.mockapi.io/'
 
-const getEmployees = () => {
-    const tbody = document.getElementById('data-employees');
-    tbody.innerHTML = '';
 
+const getEmployees = () => {
     fetch(urlBase + 'users')
         .then(response => response.json())
-        .then(data => {
-            const employees = data;
-            for (const employee of employees) {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                <td> ${employee.fullname} </td>
-                <td> ${employee.address} </td>
-                <td> ${employee.phone} </td>
-                <td> ${employee.email} </td>
-                
-                <td> <button type='button' id="${employee.id}" class= "edit"> <i class="material-icons" title="Edit">&#xE254;</i></button>
-                <button type='button' onclick="deleteEmployee(${employee.id})" class= "delete" id="${employee.id}"> <i class="material-icons" title="Delete">&#xE872;</i></td></button>`;
-                tbody.appendChild(tr);
-            }
-            //btnListener('delete', deleteEmployee);
-        }
-        )
+        .then(data => renderTable(data))
+}
+
+
+const renderTable = (data) => {
+    const tbody = document.getElementById('data-employees');
+    tbody.innerHTML = '';
+    const employees = data;
+    for (const employee of employees) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+        <td> ${employee.fullname} </td>
+        <td> ${employee.address} </td>
+        <td> ${employee.phone} </td>
+        <td> ${employee.email} </td>
+        <td> <button type='button' id="${employee.id}" class= "edit"> <i class="material-icons" title="Edit">&#xE254;</i></button>
+        <button type='button' onclick="deleteEmployee(${employee.id})" class= "delete" id="${employee.id}"> <i class="material-icons" title="Delete">&#xE872;</i></td></button>`;
+        tbody.appendChild(tr);
+        //btnListener('delete', deleteEmployee);
+    }
 }
 
 const form = document.getElementsByTagName('form')[0];
@@ -269,9 +270,22 @@ btnEditEmployee.addEventListener('clic', editEmploye());
 //     }
 // }
 
-const render = () => {
-    //esta es mi funcion render
-    getEmployees();
+
+const filter = () => {
+    const filterEmployee = document.getElementById('search');
+    //aca capturo el input filter y le pongo un addEventListener con el evento keypress
+    filterEmployee.addEventListener('keypress', e => {
+        if (e.key === "Enter") { // cuando el input recibe un "Enter" 
+            fetch(`${urlBase}/users?search=${e.target.value}`)// realizo un fetch con el valor ingresado por input
+                .then(response => response.json()) // me trae todos los employees que contengan esos caracteres
+                .then(data => renderTable(data))// renderizo la tabla con esos
+        }
+    })
 }
 
-render();
+const renderPage = () => {
+    getEmployees();
+    filter();
+}
+
+renderPage();
