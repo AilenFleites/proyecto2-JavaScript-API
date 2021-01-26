@@ -19,7 +19,7 @@ const renderTable = (data) => {
         <td> ${employee.address} </td>
         <td> ${employee.phone} </td>
         <td> ${employee.email} </td>
-        <td> <button type='button' id="${employee.id}" class= "edit"> <i class="material-icons" title="Edit">&#xE254;</i></button>
+        <td> <button type='button' onclick="showEmployee(${employee.id})" class= "edit" id="${employee.id}"> <i class="material-icons" title="Edit">&#xE254;</i></button>
         <button type='button' onclick="deleteEmployee(${employee.id})" class= "delete" id="${employee.id}"> <i class="material-icons" title="Delete">&#xE872;</i></td></button>`;
         tbody.appendChild(tr);
         //btnListener('delete', deleteEmployee);
@@ -41,12 +41,12 @@ btnAddEmployee.addEventListener('click', (e) => {//Resetea el form cada vez que 
 const nameField = document.getElementById('name');
 const nameError = document.querySelector('#name + span.error');
 
-nameField.addEventListener('input', () => {
-    if (nameField.value.length < nameField.minLength || nameField.value.length > 50) {
-        showErrorName();
-    } else {
+nameField.addEventListener('blur', () => {
+    if (nameField.value.length >= nameField.minLength || nameField.value.length <= 50) {
         nameError.innerHTML = '';
         nameError.className = 'error';
+    } else {
+        showErrorName();
     }
 });
 
@@ -58,19 +58,19 @@ const showErrorName = () => {
     } else if (nameField.validity.tooShort) {
         nameError.innerHTML = `El nombre debe tener mínimo ${nameField.minLength} caracteres`;
     } else if (nameField.value.length > 50) {
-        nameError.innerHTML = 'El nombre debe tener menos de 60 caracteres';
+        nameError.innerHTML = 'El nombre debe tener menos de 50 caracteres';
     }
 }
 
 const addressField = document.getElementById('address');
 const addressError = document.querySelector('#address + span.error');
 
-addressField.addEventListener('input', () => {
-    if (addressField.value.length < addressField.minLength || addressField.value.length > 60) {
-        showErrorAddress();
-    } else {
+addressField.addEventListener('blur', () => {
+    if (addressField.value.length >= addressField.minLength || addressField.value.length <= 60) {
         addressError.innerHTML = '';
         addressError.className = 'error';
+    } else {
+        showErrorAddress();
     }
 });
 
@@ -91,11 +91,11 @@ const regExPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 const phoneError = document.querySelector('#phone + span.error');
 
 phoneField.addEventListener('blur', () => {
-    if (!regExPhone.test(phoneField.value)) {
-        showErrorPhone();
-    } else {
+    if (regExPhone.test(phoneField.value)) {
         phoneError.innerHTML = '';
         phoneError.className = 'error';
+    } else {
+        showErrorPhone();
     }
 });
 
@@ -113,12 +113,12 @@ const emailField = document.getElementById('email');
 const regExEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 const emailError = document.querySelector('#email + span.error');
 
-emailField.addEventListener('input', () => {
-    if (!regExEmail.test(emailField.value)) {
-        showErrorEmail();
-    } else {
+emailField.addEventListener('blur', () => {
+    if (regExEmail.test(emailField.value)) {
         emailError.innerHTML = '';
         emailError.className = 'error';
+    } else {
+        showErrorEmail();
     }
 });
 
@@ -133,7 +133,8 @@ const showErrorEmail = () => {
 }
 
 form.addEventListener('submit', (e) => {
-    if (nameField.validity.valid && nameField.value.length <= 50) {
+    if (nameField.validity.valid || nameField.value.length <= 50) {
+        console.log(nameField.value);
         nameError.innerHTML = '';
         nameError.className = 'error';
     } else {
@@ -147,7 +148,7 @@ form.addEventListener('submit', (e) => {
         showErrorAdress();
         e.preventDefault();
     }
-    if (regExPhone.test(phoneField)) {
+    if (regExPhone.test(phoneField.value)) {
         phoneError.innerHTML = '';
         phoneError.className = 'error';
     } else {
@@ -201,7 +202,8 @@ const addNewEmployee = () => {
 const formReset = () => {//Con esto se oculta el formulario al agregar empleado
     const modal = document.getElementById('modal-add-employee');
     const m = new bootstrap.Modal(modal);
-    m.hide();
+    m.hide()
+    console.log('hideModal');
     form.reset();
 }
 
@@ -209,14 +211,25 @@ const formReset = () => {//Con esto se oculta el formulario al agregar empleado
 // btnCancel.addEventListener('click', formReset);
 
 const btnAddInForm = document.getElementById('btn-add');
-btnAddInForm.addEventListener('click', e => { //No me funciona bien esto. Voy a arreglarlo
+btnAddInForm.addEventListener('click', e => {
     if ((nameField.validity.valid && nameField.value.length <= 50) && (addressField.validity.valid && addressField.value.length <= 60) && (regExPhone.test(phoneField.value) && (regExEmail.test(emailField.value)))) {
         console.log('todo OK');
         addNewEmployee();
         formReset();
     } else {
         console.log('no pasará');
-        showErrorName() || showErrorAddress() || showErrorPhone() || showErrorEmail();
+        if (nameField.validity.valueMissing || !nameField.validity.valid || nameField.value.length > 50) {
+            showErrorName();
+        }
+        if (addressField.validity.valueMissing || !addressField.validity.valid || addressField.value.length > 60) {
+            showErrorAddress();
+        }
+        if (phoneField.validity.valueMissing || !regExPhone.test(phoneField.value)) {
+            showErrorPhone();
+        }
+        if (emailField.validity.valueMissing || !regExEmail.test(emailField.value)) {
+            showErrorEmail();
+        }
         e.preventDefault();
     }
 });
@@ -245,30 +258,57 @@ const deleteEmployee = (id) => {
    }
 }*/
 
-const editEmploye = () => {
-    fetch(urlBase + '/users' + id, {
-        method: "PUT"
-    })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .then(data => {
-            console.log(data);
-        });
-}
+// FUNCION UPDATE
+// const showEmployee = (id) => {
+//     fetch(urlBase + '/users/' + id, {
+//         method: 'GET'
+//     })
+//         .then(response => response.json())
+//         .then(data => fillForm(data));
+// };
 
-const btnEditEmployee = document.getElementsByClassName('edit');
-btnEditEmployee.addEventListener('clic', editEmploye());
-
-// const getEmployee = (id) => {
-//     let employee = data
-//     let findEmployee = {
-//         data.
-//             name: data.fullname,
-//         address: data.adress,
-//         phone: data.phone,
-//         email: data.email
-//     }
+// const fillForm = (data) => {
+//     const modal = document.getElementById('modal-add-employee');
+//     const m = new bootstrap.Modal(modal);
+//     m.show();
+//     btnAddInForm.setAttribute('class', 'btn btn-success edit');
+//     btnAddInForm.innerHTML = 'Update';
+//     nameField.value = data.fullname,
+//         addressField.value = data.address,
+//         phoneField.value = data.phone,
+//         emailField.value = data.email
 // }
+
+// const editForm = (id) => {
+//     form.addEventListener('submit', function updateForm(fullname, address, phone, email) {
+//         this.id = id,
+//             this.fullname = nameField.value,
+//             this.address = addressField.value,
+//             this.phone = phoneField.value,
+//             this.email = emailField.value
+//     });
+// }
+
+
+// const updateEmployee = (id) => {
+//     const newEmployee = createEmployee();
+//     console.log(newEmployee);
+//     fetch(urlBase + '/users/' + id, {
+//         method: 'PATCH',
+//         headers: {
+//             'Content-Type': 'Aplication/json'
+//         },
+//         body: JSON.stringify(newEmployee)
+//     })
+//         .then(response => {
+//             return response.json(new editForm(id))
+//         })
+//         .then(data => console.log(data))
+//         .catch(error => console.log(error))
+// }
+
+// btnAddInForm.addEventListener('click', updateEmployee());
+
 
 
 const filter = () => {
