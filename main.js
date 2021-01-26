@@ -44,13 +44,14 @@ nameField.addEventListener('input', () => {
     if (nameField.value.length < nameField.minLength || nameField.value.length > 50) {
         showErrorName();
     } else {
-        nameError.innerHTML = ''
+        nameError.innerHTML = '';
         nameError.className = 'error';
     }
 });
 
 const showErrorName = () => {
     console.log('errorName');
+    nameError.className = 'error active';
     if (nameField.validity.valueMissing) {
         nameError.innerHTML = 'Debería introducir un nombre';
     } else if (nameField.validity.tooShort) {
@@ -58,7 +59,6 @@ const showErrorName = () => {
     } else if (nameField.value.length > 50) {
         nameError.innerHTML = 'El nombre debe tener menos de 60 caracteres';
     }
-    nameError.className = 'error activo';
 }
 
 const addressField = document.getElementById('address');
@@ -68,13 +68,14 @@ addressField.addEventListener('input', () => {
     if (addressField.value.length < addressField.minLength || addressField.value.length > 60) {
         showErrorAddress();
     } else {
-        addressError.innerHTML = ''
+        addressError.innerHTML = '';
         addressError.className = 'error';
     }
 });
 
 const showErrorAddress = () => {
     console.log('errorAddress');
+    addressError.className = 'error active';
     if (addressField.validity.valueMissing) {
         addressError.innerHTML = 'Debería introducir una dirección';
     } else if (addressField.validity.tooShort) {
@@ -82,55 +83,52 @@ const showErrorAddress = () => {
     } else if (addressField.value.length > 60) {
         addressError.innerHTML = 'La dirección debe tener menos de 60 caracteres';
     }
-    addressError.className = 'error activo';
 }
 
 const phoneField = document.getElementById('phone');
-const regExPhone = /^\(?([0-9]{2,4})\)?[- ]?([0-9]{6,8})$/
+const regExPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 const phoneError = document.querySelector('#phone + span.error');
 
-phoneField.addEventListener('input', () => {
-    if (phone.value.length < 10 || !regExPhone.test(phoneField.value)) {
+phoneField.addEventListener('blur', () => {
+    if (!regExPhone.test(phoneField.value)) {
         showErrorPhone();
     } else {
-        addressError.innerHTML = ''
-        addressError.className = 'error';
+        phoneError.innerHTML = '';
+        phoneError.className = 'error';
     }
 });
 
 const showErrorPhone = () => {
     console.log('errorPhone');
+    phoneError.className = 'error active';
     if (phoneField.validity.valueMissing) {
         phoneError.innerHTML = 'Debería introducir un teléfono';
-    } else if (phoneField.validity.tooShort) {
-        phoneError.innerHTML = 'El teléfono debe tener mínimo 10 números';
     } else if (!regExPhone.test(phoneField.value)) {
         phoneError.innerHTML = 'El dato ingresado no parece ser un teléfono';
     }
-    phoneError.className = 'error activo';
 }
 
 const emailField = document.getElementById('email');
-const regExEmail = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+const regExEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 const emailError = document.querySelector('#email + span.error');
 
 emailField.addEventListener('input', () => {
     if (!regExEmail.test(emailField.value)) {
         showErrorEmail();
     } else {
-        emailError.innerHTML = ''
+        emailError.innerHTML = '';
         emailError.className = 'error';
     }
 });
 
 const showErrorEmail = () => {
     console.log('errorEmail');
+    emailError.className = 'error active';
     if (emailField.validity.valueMissing) {
-        emailError.innerHTML = 'Debería introducir un nombre';
+        emailError.innerHTML = 'Debería introducir un correo';
     } else if (!regExEmail.test(emailField.value)) {
-        phoneError.innerHTML = 'El dato ingresado no parece ser un correo electrónico';
+        emailError.innerHTML = 'El dato ingresado no parece ser un correo electrónico';
     }
-    emailError.className = 'error activo';
 }
 
 form.addEventListener('submit', (e) => {
@@ -199,18 +197,25 @@ const addNewEmployee = () => {
         })
 }
 
+const formReset = () => {//Con esto se oculta el formulario al agregar empleado
+    const modal = document.getElementById('modal-add-employee');
+    const m = new bootstrap.Modal(modal);
+    m.hide();
+    form.reset();
+}
+
+// const btnCancel = document.getElementsByClassName('btn-secondary');
+// btnCancel.addEventListener('click', formReset);
+
 const btnAddInForm = document.getElementById('btn-add');
 btnAddInForm.addEventListener('click', e => { //No me funciona bien esto. Voy a arreglarlo
-    if ((nameField.validity.valid || nameField.value.length >= 50) || (addressField.validity.valid || addressField.value.length >= 60) && (regExPhone.test(phoneField.value) && (regExEmail.test(emailField.value)))) {
+    if ((nameField.validity.valid && nameField.value.length <= 50) && (addressField.validity.valid && addressField.value.length <= 60) && (regExPhone.test(phoneField.value) && (regExEmail.test(emailField.value)))) {
+        console.log('todo OK');
         addNewEmployee();
-        //Con esto se oculta el formulario al agregar empleado
-        const modal = document.getElementById('modal-add-employee');
-        const m = bootstrap.Modal.getInstance(modal);
-        m.hide();
+        formReset();
     } else {
-        //No me funciona esto... 
         console.log('no pasará');
-
+        showErrorName() || showErrorAddress() || showErrorPhone() || showErrorEmail();
         e.preventDefault();
     }
 });
@@ -238,6 +243,31 @@ const deleteEmployee = (id) => {
        })
    }
 }*/
+
+const editEmploye = () => {
+    fetch(urlBase + '/users' + id, {
+        method: "PUT"
+    })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .then(data => {
+            console.log(data);
+        });
+}
+
+const btnEditEmployee = document.getElementsByClassName('edit');
+btnEditEmployee.addEventListener('clic', editEmploye());
+
+// const getEmployee = (id) => {
+//     let employee = data
+//     let findEmployee = {
+//         data.
+//             name: data.fullname,
+//         address: data.adress,
+//         phone: data.phone,
+//         email: data.email
+//     }
+// }
 
 const render = () => {
     //esta es mi funcion render
