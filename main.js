@@ -209,13 +209,11 @@ const formReset = () => {//Con esto se oculta el formulario al agregar empleado
 
 // const btnCancel = document.getElementsByClassName('btn-secondary');
 // btnCancel.addEventListener('click', formReset);
-
 const btnAddInForm = document.getElementById('btn-add');
 btnAddInForm.addEventListener('click', e => {
     if ((nameField.validity.valid && nameField.value.length <= 50) && (addressField.validity.valid && addressField.value.length <= 60) && (regExPhone.test(phoneField.value) && (regExEmail.test(emailField.value)))) {
         console.log('todo OK');
         addNewEmployee();
-        formReset();
     } else {
         console.log('no pasará');
         if (nameField.validity.valueMissing || !nameField.validity.valid || nameField.value.length > 50) {
@@ -230,7 +228,7 @@ btnAddInForm.addEventListener('click', e => {
         if (emailField.validity.valueMissing || !regExEmail.test(emailField.value)) {
             showErrorEmail();
         }
-        e.preventDefault();
+        //e.preventDefault();
     }
 });
 
