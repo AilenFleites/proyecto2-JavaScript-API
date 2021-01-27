@@ -171,6 +171,8 @@ const createEmployee = () => {//capturo los valores de los inputs del form y ret
     const address = document.getElementById('address').value;
     const phone = document.getElementById('phone').value;
     const email = document.getElementById('email').value;
+
+
     return {
         fullname: name,
         address: address,
@@ -199,16 +201,17 @@ const addNewEmployee = () => {
         })
 }
 
-const formReset = () => {//Con esto se oculta el formulario al agregar empleado
+const formReset = () => {
     const modal = document.getElementById('modal-add-employee');
-    const m = new bootstrap.Modal(modal);
-    m.hide()
-    console.log('hideModal');
+    const m = bootstrap.Modal.getInstance(modal);
+    m.hide();
     form.reset();
 }
 
-// const btnCancel = document.getElementsByClassName('btn-secondary');
-// btnCancel.addEventListener('click', formReset);
+const btnCancel = document.getElementById('btn-cancel');
+btnCancel.addEventListener('click', () => {
+    formReset();
+});
 
 const btnAddInForm = document.getElementById('btn-add');
 btnAddInForm.addEventListener('click', e => {
@@ -259,55 +262,64 @@ const deleteEmployee = (id) => {
 }*/
 
 // FUNCION UPDATE
-// const showEmployee = (id) => {
-//     fetch(urlBase + '/users/' + id, {
-//         method: 'GET'
-//     })
-//         .then(response => response.json())
-//         .then(data => fillForm(data));
-// };
+const showEmployee = (id) => { //Esta función está asociada al botón "edit", hace un pequeño GET por cada empleado, usando su ID
+    fetch(urlBase + '/users/' + id, {
+        method: 'GET'
+    })
+        .then(response => response.json())
+        .then(data => fillForm(data));
+};
 
-// const fillForm = (data) => {
-//     const modal = document.getElementById('modal-add-employee');
-//     const m = new bootstrap.Modal(modal);
-//     m.show();
-//     btnAddInForm.setAttribute('class', 'btn btn-success edit');
-//     btnAddInForm.innerHTML = 'Update';
-//     nameField.value = data.fullname,
-//         addressField.value = data.address,
-//         phoneField.value = data.phone,
-//         emailField.value = data.email
-// }
+const fillForm = (data) => {//Esta función carga los datos que me traje del API de UN empleado y los carga en el form, dato a dato
+    const modal = document.getElementById('modal-add-employee');
+    const m = new bootstrap.Modal(modal);
+    m.show();
+    btnAddInForm.setAttribute('class', 'btn btn-success edit');
+    btnAddInForm.innerHTML = 'Update';
+    nameField.value = data.fullname,
+        addressField.value = data.address,
+        phoneField.value = data.phone,
+        emailField.value = data.email
+}
 
-// const editForm = (id) => {
-//     form.addEventListener('submit', function updateForm(fullname, address, phone, email) {
-//         this.id = id,
-//             this.fullname = nameField.value,
-//             this.address = addressField.value,
-//             this.phone = phoneField.value,
-//             this.email = emailField.value
-//     });
-// }
+function updateForm(id, fullname, address, phone, email) {
+    this.id = id,
+        this.fullname = fullname;
+    this.address = address;
+    this.phone = phone;
+    this.email = email;
+}
+
+const editForm = () => {
+    form.addEventListener('submit', () => {
+        new updateForm(id, fullname, address, phone, email)
+    });
+}
 
 
-// const updateEmployee = (id) => {
-//     const newEmployee = createEmployee();
-//     console.log(newEmployee);
-//     fetch(urlBase + '/users/' + id, {
-//         method: 'PATCH',
-//         headers: {
-//             'Content-Type': 'Aplication/json'
-//         },
-//         body: JSON.stringify(newEmployee)
-//     })
-//         .then(response => {
-//             return response.json(new editForm(id))
-//         })
-//         .then(data => console.log(data))
-//         .catch(error => console.log(error))
-// }
+const updateEmployee = (id) => {
+    const fullname = nameField.value;
+    const address = addressField.value;
+    const phone = phoneField.value;
+    const email = emailField.value;
 
-// btnAddInForm.addEventListener('click', updateEmployee());
+    const editEmployee = new updateForm(id, fullname, address, phone, email);
+    console.log(editEmployee);
+    fetch(urlBase + '/users/' + id, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'Aplication/json'
+        },
+        body: JSON.stringify(editEmployee)
+    })
+        .then(response => {
+            return response.json();
+        })
+        .then(data => getEmployees())
+        .catch(error => console.log(error))
+}
+
+btnAddInForm.addEventListener('click', updateEmployee());
 
 
 
