@@ -184,7 +184,7 @@ const createEmployee = () => {//capturo los valores de los inputs del form y ret
 const addNewEmployee = () => {
     const newEmployee = createEmployee();
     console.log(newEmployee);
-
+    if (validaciones() === true){
     fetch(urlBase + 'users', {
         method: 'POST',
         headers: {
@@ -199,6 +199,7 @@ const addNewEmployee = () => {
         .catch(error => {
             console.error(error)
         })
+    }
 }
 const formReset = () => {
     const modal = document.getElementById('modal-add-employee');
@@ -211,29 +212,34 @@ const btnCancel = document.getElementById('btn-cancel');
 btnCancel.addEventListener('click', () => {
     formReset();
 });
+const validaciones = () =>{
+    const valido = false;
+    const btnAddInForm = document.getElementById('btn-add');
+    btnAddInForm.addEventListener('click', e => {
+        if ((nameField.validity.valid && nameField.value.length <= 50) && (addressField.validity.valid && addressField.value.length <= 60) && (regExPhone.test(phoneField.value) && (regExEmail.test(emailField.value)))) {
+            console.log('todo OK');
+            valido = true;
+            return valido;
+        } else {
+            console.log('no pasará');
+            if (nameField.validity.valueMissing || !nameField.validity.valid || nameField.value.length > 50) {
+                showErrorName();
+            }
+            if (addressField.validity.valueMissing || !addressField.validity.valid || addressField.value.length > 60) {
+                showErrorAddress();
+            }
+            if (phoneField.validity.valueMissing || !regExPhone.test(phoneField.value)) {
+                showErrorPhone();
+            }
+            if (emailField.validity.valueMissing || !regExEmail.test(emailField.value)) {
+                showErrorEmail();
+            }
+            e.preventDefault();
+        }
+        return false;
+    });
+}
 
-const btnAddInForm = document.getElementById('btn-add');
-btnAddInForm.addEventListener('click', e => {
-    if ((nameField.validity.valid && nameField.value.length <= 50) && (addressField.validity.valid && addressField.value.length <= 60) && (regExPhone.test(phoneField.value) && (regExEmail.test(emailField.value)))) {
-        console.log('todo OK');
-        addNewEmployee();
-    } else {
-        console.log('no pasará');
-        if (nameField.validity.valueMissing || !nameField.validity.valid || nameField.value.length > 50) {
-            showErrorName();
-        }
-        if (addressField.validity.valueMissing || !addressField.validity.valid || addressField.value.length > 60) {
-            showErrorAddress();
-        }
-        if (phoneField.validity.valueMissing || !regExPhone.test(phoneField.value)) {
-            showErrorPhone();
-        }
-        if (emailField.validity.valueMissing || !regExEmail.test(emailField.value)) {
-            showErrorEmail();
-        }
-        e.preventDefault();
-    }
-});
 
 //función del botón delete
 
@@ -277,6 +283,7 @@ const fillForm = (data, id) => {//Esta función carga los datos que me traje del
     const modal = document.getElementById('modal-add-employee');
     const m = new bootstrap.Modal(modal);
     m.show();
+    const btnAddInForm = document.getElementById('btn-add')
     btnAddInForm.setAttribute('class', 'btn btn-success edit');
     btnAddInForm.innerHTML = 'Update';
         nameField.value = data.fullname,
