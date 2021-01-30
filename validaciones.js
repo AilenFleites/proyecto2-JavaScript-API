@@ -1,15 +1,16 @@
 //VALIDACIONES
-//Espero poder acortar esto
 const form = document.getElementsByTagName('form')[0];
+
 const nameField = document.getElementById('name');
 const nameError = document.querySelector('#name + span.error');
 
 nameField.addEventListener('blur', () => {
-    if (nameField.value.length >= nameField.minLength || nameField.value.length <= 50) {
+    if ((nameField.value.length < nameField.minLength) || (nameField.value.length > 50)) {
+        showErrorName();
+    } else {
+        console.log('savedName');
         nameError.innerHTML = '';
         nameError.className = 'error';
-    } else {
-        showErrorName();
     }
 });
 
@@ -29,11 +30,12 @@ const addressField = document.getElementById('address');
 const addressError = document.querySelector('#address + span.error');
 
 addressField.addEventListener('blur', () => {
-    if (addressField.value.length >= addressField.minLength || addressField.value.length <= 60) {
+    if ((addressField.value.length < addressField.minLength) || (addressField.value.length > 60)) {
+        showErrorAddress();
+    } else {
+        console.log('savedAddress');
         addressError.innerHTML = '';
         addressError.className = 'error';
-    } else {
-        showErrorAddress();
     }
 });
 
@@ -55,6 +57,7 @@ const phoneError = document.querySelector('#phone + span.error');
 
 phoneField.addEventListener('blur', () => {
     if (regExPhone.test(phoneField.value)) {
+        console.log('savedPhone');
         phoneError.innerHTML = '';
         phoneError.className = 'error';
     } else {
@@ -78,6 +81,7 @@ const emailError = document.querySelector('#email + span.error');
 
 emailField.addEventListener('blur', () => {
     if (regExEmail.test(emailField.value)) {
+        console.log('savedEmail');
         emailError.innerHTML = '';
         emailError.className = 'error';
     } else {
@@ -129,7 +133,7 @@ form.addEventListener('submit', (e) => {
 
 /// Hasta aquí validaciones O_O
 
-const validaciones = () =>{
+const validaciones = () => {
     if ((nameField.validity.valid && nameField.value.length <= 50) && (addressField.validity.valid && addressField.value.length <= 60) && (regExPhone.test(phoneField.value) && (regExEmail.test(emailField.value)))) {
         console.log('todo OK');
         return true;
