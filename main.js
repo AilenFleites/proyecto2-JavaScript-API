@@ -1,5 +1,10 @@
 const urlBase = 'https://5ffb628063ea2f0017bdb0ef.mockapi.io/'
+const btnAddEmployee = document.getElementById('btn-add-employee');
+const btnAddInForm = document.getElementById('btn-add');
+const btnEdit = document.getElementById('btn-edit')
+const btnCancel = document.getElementById('btn-cancel');
 
+//Esta funcion realiza un GET de todos los empleados 
 
 const getEmployees = () => {
     fetch(urlBase + 'users')
@@ -7,6 +12,7 @@ const getEmployees = () => {
         .then(data => renderTable(data))
 }
 
+//Esta funcion recibe la lista de empleados y la renderiza en una tabla
 
 const renderTable = (data) => {
     const tbody = document.getElementById('data-employees');
@@ -19,160 +25,20 @@ const renderTable = (data) => {
         <td> ${employee.address} </td>
         <td> ${employee.phone} </td>
         <td> ${employee.email} </td>
-        <td> <button type='button' onclick="showEmployee(${employee.id})" class= "edit" id="${employee.id}"> <i class="material-icons" title="Edit">&#xE254;</i></button>
-        <button type='button' onclick="deleteEmployee(${employee.id})" class= "delete" id="${employee.id}"> <i class="material-icons" title="Delete">&#xE872;</i></td></button>`;
+        <td> <button type='button' onclick="showEmployee(${employee.id})" id="edit"> <i class="material-icons" title="Edit">&#xE254;</i></button>
+      <button type='button' onclick="deleteEmployee(${employee.id})" id="delete"> <i class="material-icons" title="Delete">&#xE872;</i></td></button>`;
         tbody.appendChild(tr);
-        //btnListener('delete', deleteEmployee);
     }
 }
 
-const form = document.getElementsByTagName('form')[0];
-
-const btnAddEmployee = document.getElementById('btn-add-employee');
-
-btnAddEmployee.addEventListener('click', (e) => {//Resetea el form cada vez que se quiere agregar empleado
-    e.preventDefault();
-    form.reset();
-})
-
-//VALIDACIONES
-//Espero poder acortar esto
-
-const nameField = document.getElementById('name');
-const nameError = document.querySelector('#name + span.error');
-
-nameField.addEventListener('blur', () => {
-    if (nameField.value.length >= nameField.minLength || nameField.value.length <= 50) {
-        nameError.innerHTML = '';
-        nameError.className = 'error';
-    } else {
-        showErrorName();
-    }
-});
-
-const showErrorName = () => {
-    console.log('errorName');
-    nameError.className = 'error active';
-    if (nameField.validity.valueMissing) {
-        nameError.innerHTML = 'Debería introducir un nombre';
-    } else if (nameField.validity.tooShort) {
-        nameError.innerHTML = `El nombre debe tener mínimo ${nameField.minLength} caracteres`;
-    } else if (nameField.value.length > 50) {
-        nameError.innerHTML = 'El nombre debe tener menos de 50 caracteres';
-    }
-}
-
-const addressField = document.getElementById('address');
-const addressError = document.querySelector('#address + span.error');
-
-addressField.addEventListener('blur', () => {
-    if (addressField.value.length >= addressField.minLength || addressField.value.length <= 60) {
-        addressError.innerHTML = '';
-        addressError.className = 'error';
-    } else {
-        showErrorAddress();
-    }
-});
-
-const showErrorAddress = () => {
-    console.log('errorAddress');
-    addressError.className = 'error active';
-    if (addressField.validity.valueMissing) {
-        addressError.innerHTML = 'Debería introducir una dirección';
-    } else if (addressField.validity.tooShort) {
-        addressError.innerHTML = `La dirección debe tener mínimo ${addressField.minLength} caracteres`;
-    } else if (addressField.value.length > 60) {
-        addressError.innerHTML = 'La dirección debe tener menos de 60 caracteres';
-    }
-}
-
-const phoneField = document.getElementById('phone');
-const regExPhone = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-const phoneError = document.querySelector('#phone + span.error');
-
-phoneField.addEventListener('blur', () => {
-    if (regExPhone.test(phoneField.value)) {
-        phoneError.innerHTML = '';
-        phoneError.className = 'error';
-    } else {
-        showErrorPhone();
-    }
-});
-
-const showErrorPhone = () => {
-    console.log('errorPhone');
-    phoneError.className = 'error active';
-    if (phoneField.validity.valueMissing) {
-        phoneError.innerHTML = 'Debería introducir un teléfono';
-    } else if (!regExPhone.test(phoneField.value)) {
-        phoneError.innerHTML = 'El dato ingresado no parece ser un teléfono';
-    }
-}
-
-const emailField = document.getElementById('email');
-const regExEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-const emailError = document.querySelector('#email + span.error');
-
-emailField.addEventListener('blur', () => {
-    if (regExEmail.test(emailField.value)) {
-        emailError.innerHTML = '';
-        emailError.className = 'error';
-    } else {
-        showErrorEmail();
-    }
-});
-
-const showErrorEmail = () => {
-    console.log('errorEmail');
-    emailError.className = 'error active';
-    if (emailField.validity.valueMissing) {
-        emailError.innerHTML = 'Debería introducir un correo';
-    } else if (!regExEmail.test(emailField.value)) {
-        emailError.innerHTML = 'El dato ingresado no parece ser un correo electrónico';
-    }
-}
-
-form.addEventListener('submit', (e) => {
-    if (nameField.validity.valid || nameField.value.length <= 50) {
-        console.log(nameField.value);
-        nameError.innerHTML = '';
-        nameError.className = 'error';
-    } else {
-        showErrorName();
-        e.preventDefault();
-    }
-    if (addressField.validity.valid || addressField.value.length <= 60) {
-        addressError.innerHTML = '';
-        addressError.className = 'error';
-    } else {
-        showErrorAdress();
-        e.preventDefault();
-    }
-    if (regExPhone.test(phoneField.value)) {
-        phoneError.innerHTML = '';
-        phoneError.className = 'error';
-    } else {
-        showErrorPhone();
-        e.preventDefault();
-    }
-    if (regExEmail.test(emailField.value)) {
-        emailError.innerHTML = '';
-        emailError.className = 'error';
-    } else {
-        showErrorEmail();
-        e.preventDefault();
-    }
-});
-
-/// Hasta aquí validaciones O_O
 
 const createEmployee = () => {//capturo los valores de los inputs del form y retorno un nuevo employee
     const name = document.getElementById('name').value;
     const address = document.getElementById('address').value;
     const phone = document.getElementById('phone').value;
     const email = document.getElementById('email').value;
-
-
+   
+    if(validaciones() === true){
     return {
         fullname: name,
         address: address,
@@ -180,11 +46,11 @@ const createEmployee = () => {//capturo los valores de los inputs del form y ret
         email: email
     }
 }
+}
 
 const addNewEmployee = () => {
     const newEmployee = createEmployee();
     console.log(newEmployee);
-    if (validaciones() === true){
     fetch(urlBase + 'users', {
         method: 'POST',
         headers: {
@@ -199,8 +65,9 @@ const addNewEmployee = () => {
         .catch(error => {
             console.error(error)
         })
-    }
 }
+
+//Esta funcion esconde el modal y resetea el form
 const formReset = () => {
     const modal = document.getElementById('modal-add-employee');
     const m = bootstrap.Modal.getInstance(modal);
@@ -208,40 +75,31 @@ const formReset = () => {
     form.reset();
 }
 
-const btnCancel = document.getElementById('btn-cancel');
-btnCancel.addEventListener('click', () => {
-    formReset();
-});
-const validaciones = () =>{
-    const valido = false;
-    const btnAddInForm = document.getElementById('btn-add');
-    btnAddInForm.addEventListener('click', e => {
-        if ((nameField.validity.valid && nameField.value.length <= 50) && (addressField.validity.valid && addressField.value.length <= 60) && (regExPhone.test(phoneField.value) && (regExEmail.test(emailField.value)))) {
-            console.log('todo OK');
-            valido = true;
-            return valido;
-        } else {
-            console.log('no pasará');
-            if (nameField.validity.valueMissing || !nameField.validity.valid || nameField.value.length > 50) {
-                showErrorName();
-            }
-            if (addressField.validity.valueMissing || !addressField.validity.valid || addressField.value.length > 60) {
-                showErrorAddress();
-            }
-            if (phoneField.validity.valueMissing || !regExPhone.test(phoneField.value)) {
-                showErrorPhone();
-            }
-            if (emailField.validity.valueMissing || !regExEmail.test(emailField.value)) {
-                showErrorEmail();
-            }
-            e.preventDefault();
-        }
-        return false;
+//Este evento oculta el boton edit del modal, muestra el boton add
+// y resetea el form cada vez que se quiere agregar empleado
+
+btnAddEmployee.addEventListener('click', (e) => {
+    e.preventDefault();
+    btnEdit.setAttribute('class', 'hide-btn')
+    const btnAddInForm = document.getElementById('btn-add')
+    btnAddInForm.setAttribute('class', 'btn btn-success');
+    form.reset();
+})
+//Este evento ejecuta la funcion de agregar empleado al hacer click en el boton add
+btnAddInForm.addEventListener('click', e => {
+        e.preventDefault()
+        addNewEmployee();
+        formReset();
+    })
+
+//Este evento resetea el modal al hacer click en boton cancel
+    btnCancel.addEventListener('click', () => {
+        formReset();
     });
-}
 
 
-//función del botón delete
+//función del botón delete, se ejecuta con un 'onclick()' 
+//en el boton delete de cada tr en la tabla
 
 const deleteEmployee = (id) => {
     fetch(urlBase + 'users/' + id, {
@@ -252,24 +110,8 @@ const deleteEmployee = (id) => {
         .then(data => getEmployees());
 }
 
-//esta funcion recibe un className y una funcion, recorre un array de botones by classname 
-//y ejecuta la funcion al sucederse el evento "click", enviando el id del boton clickeado a la funcion callback (delete)
-/*const btnListener = (className, callback) => {
-   const btnList = document.getElementsByClassName(className);
-   for (let i = 0; i < btnList.length; i++) {
-       btnList[i].addEventListener('click', e => {
-           const id = btnList[i].id;
-           console.log(id)
-           callback(id);
-       })
-   }
-}*/
-
-
-
-
-// FUNCION UPDATE
-const showEmployee = (id) => { //Esta función está asociada al botón "edit", hace un pequeño GET por cada empleado, usando su ID
+// //Esta función está asociada al botón "edit", hace un pequeño GET por cada empleado, usando su ID
+const showEmployee = (id) => { 
     fetch(urlBase + '/users/' + id, {
         method: 'GET'
     })
@@ -278,26 +120,28 @@ const showEmployee = (id) => { //Esta función está asociada al botón "edit", 
     
     
 };
-
-const fillForm = (data, id) => {//Esta función carga los datos que me traje del API de UN empleado y los carga en el form, dato a dato
+//Esta función carga los datos que me traje del API de UN empleado y los carga en el form, 
+// oculta el boton add, muestra el boton update y sobre este ejecuta updateEmployee
+const fillForm = (data, id) => {
     const modal = document.getElementById('modal-add-employee');
     const m = new bootstrap.Modal(modal);
     m.show();
     const btnAddInForm = document.getElementById('btn-add')
-    btnAddInForm.setAttribute('class', 'btn btn-success edit');
-    btnAddInForm.innerHTML = 'Update';
+    btnAddInForm.setAttribute('class', 'hide-btn');
+    btnEdit.setAttribute('class', 'btn btn-success');
         nameField.value = data.fullname,
         addressField.value = data.address,
         phoneField.value = data.phone,
         emailField.value = data.email
     
-    form.addEventListener('click', e =>{
-        const user = createEmployee();//esta funcion deberiamos 
+    btnEdit.addEventListener('click', e =>{
         e.preventDefault()
-        updateEmployee(id,user)
+        if(validaciones() === true){
+        const user = createEmployee();
+        updateEmployee(id,user)}
     })
 }
-
+//Esta funcion edita los datos del empleado
 const updateEmployee = (id, user) => {  
    const editEmployee = user;
     fetch(`${urlBase}/users/${id}`, {
@@ -308,7 +152,7 @@ const updateEmployee = (id, user) => {
         .then(response => response.json())
         .then(data => getEmployees(data))
 }
-
+//Funcion filter
 const filter = () => {
     const filterEmployee = document.getElementById('search');
     //aca capturo el input filter y le pongo un addEventListener con el evento keypress
