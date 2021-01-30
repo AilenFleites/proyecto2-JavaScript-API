@@ -38,15 +38,15 @@ const createEmployee = () => {//capturo los valores de los inputs del form y ret
     const address = document.getElementById('address').value;
     const phone = document.getElementById('phone').value;
     const email = document.getElementById('email').value;
-   
-    if(validaciones() === true){
-    return {
-        fullname: name,
-        address: address,
-        phone: phone,
-        email: email
+
+    if (validaciones() === true) {
+        return {
+            fullname: name,
+            address: address,
+            phone: phone,
+            email: email
+        }
     }
-}
 }
 
 const addNewEmployee = () => {
@@ -85,20 +85,25 @@ btnAddEmployee.addEventListener('click', (e) => {
     const btnAddInForm = document.getElementById('btn-add')
     btnAddInForm.setAttribute('class', 'btn btn-success');
     form.reset();
+    const errors = [nameError, addressError, phoneError, emailError];
+    for (const error of errors) {
+        error.innerHTML = '';
+        error.className = 'error';
+    }
 })
 //Este evento ejecuta la funcion de agregar empleado al hacer click en el boton add
 btnAddInForm.addEventListener('click', e => {
-        e.preventDefault();
-        if(validaciones() === true){
+    e.preventDefault();
+    if (validaciones() === true) {
         addNewEmployee();
         formReset();
-        }
-    })
+    }
+})
 
 //Este evento resetea el modal al hacer click en boton cancel
-    btnCancel.addEventListener('click', () => {
-        formReset();
-    });
+btnCancel.addEventListener('click', () => {
+    formReset();
+});
 
 
 //función del botón delete, se ejecuta con un 'onclick()' 
@@ -107,7 +112,7 @@ btnAddInForm.addEventListener('click', e => {
 const deleteEmployee = (id) => {
     const btnConfirmDelete = document.getElementById('btn-confirm-delete')
     btnConfirmDelete.onclick = () => {
-         fetch(urlBase + 'users/' + id, {
+        fetch(urlBase + 'users/' + id, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' }
         })
@@ -118,14 +123,14 @@ const deleteEmployee = (id) => {
 }
 
 // //Esta función está asociada al botón "edit", hace un pequeño GET por cada empleado, usando su ID
-const showEmployee = (id) => { 
+const showEmployee = (id) => {
     fetch(urlBase + '/users/' + id, {
         method: 'GET'
     })
         .then(response => response.json())
         .then(data => fillForm(data, id))
-    
-    
+
+
 };
 //Esta función carga los datos que me traje del API de UN empleado y los carga en el form, 
 // oculta el boton add, muestra el boton update y sobre este ejecuta updateEmployee
@@ -136,22 +141,31 @@ const fillForm = (data, id) => {
     const btnAddInForm = document.getElementById('btn-add')
     btnAddInForm.setAttribute('class', 'hide-btn');
     btnEdit.setAttribute('class', 'btn btn-success');
-        nameField.value = data.fullname,
-        addressField.value = data.address,
-        phoneField.value = data.phone,
-        emailField.value = data.email
-    
-    btnEdit.addEventListener('click', e =>{
+    nameField.value = data.fullname;
+    addressField.value = data.address;
+    phoneField.value = data.phone;
+    emailField.value = data.email;
+
+    btnEdit.addEventListener('click', e => {
         e.preventDefault();
-        if(validaciones() === true){
-        const user = createEmployee();
-        updateEmployee(id,user)
+        if (validaciones() === true) {
+            const user = createEmployee();
+            updateEmployee(id, user);
+            resetAndHide();
         }
     })
 }
+
+const resetAndHide = () => {
+    const modal = document.getElementById('modalEdit');
+    const mo = bootstrap.Modal.getInstance(modal);
+    mo.hide();
+    form.reset();
+}
+
 //Esta funcion edita los datos del empleado
-const updateEmployee = (id, user) => {  
-   const editEmployee = user;
+const updateEmployee = (id, user) => {
+    const editEmployee = user;
     fetch(`${urlBase}/users/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -172,7 +186,7 @@ const filter = () => {
                 .then(data => renderTable(data))// renderizo la tabla con esos
         }
     })
-    
+
 }
 
 const renderPage = () => {
