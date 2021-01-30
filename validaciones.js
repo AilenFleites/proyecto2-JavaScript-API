@@ -8,14 +8,12 @@ nameField.addEventListener('blur', () => {
     if ((nameField.value.length < nameField.minLength) || (nameField.value.length > 50)) {
         showErrorName();
     } else {
-        console.log('savedName');
         nameError.innerHTML = '';
         nameError.className = 'error';
     }
 });
 
 const showErrorName = () => {
-    console.log('errorName');
     nameError.className = 'error active';
     if (nameField.validity.valueMissing) {
         nameError.innerHTML = 'Debería introducir un nombre';
@@ -33,14 +31,12 @@ addressField.addEventListener('blur', () => {
     if ((addressField.value.length < addressField.minLength) || (addressField.value.length > 60)) {
         showErrorAddress();
     } else {
-        console.log('savedAddress');
         addressError.innerHTML = '';
         addressError.className = 'error';
     }
 });
 
 const showErrorAddress = () => {
-    console.log('errorAddress');
     addressError.className = 'error active';
     if (addressField.validity.valueMissing) {
         addressError.innerHTML = 'Debería introducir una dirección';
@@ -57,7 +53,6 @@ const phoneError = document.querySelector('#phone + span.error');
 
 phoneField.addEventListener('blur', () => {
     if (regExPhone.test(phoneField.value)) {
-        console.log('savedPhone');
         phoneError.innerHTML = '';
         phoneError.className = 'error';
     } else {
@@ -66,7 +61,6 @@ phoneField.addEventListener('blur', () => {
 });
 
 const showErrorPhone = () => {
-    console.log('errorPhone');
     phoneError.className = 'error active';
     if (phoneField.validity.valueMissing) {
         phoneError.innerHTML = 'Debería introducir un teléfono';
@@ -81,7 +75,6 @@ const emailError = document.querySelector('#email + span.error');
 
 emailField.addEventListener('blur', () => {
     if (regExEmail.test(emailField.value)) {
-        console.log('savedEmail');
         emailError.innerHTML = '';
         emailError.className = 'error';
     } else {
@@ -90,7 +83,6 @@ emailField.addEventListener('blur', () => {
 });
 
 const showErrorEmail = () => {
-    console.log('errorEmail');
     emailError.className = 'error active';
     if (emailField.validity.valueMissing) {
         emailError.innerHTML = 'Debería introducir un correo';
@@ -101,7 +93,6 @@ const showErrorEmail = () => {
 
 form.addEventListener('submit', (e) => {
     if (nameField.validity.valid || nameField.value.length <= 50) {
-        console.log(nameField.value);
         nameError.innerHTML = '';
         nameError.className = 'error';
     } else {
@@ -135,10 +126,8 @@ form.addEventListener('submit', (e) => {
 
 const validaciones = () => {
     if ((nameField.validity.valid && nameField.value.length <= 50) && (addressField.validity.valid && addressField.value.length <= 60) && (regExPhone.test(phoneField.value) && (regExEmail.test(emailField.value)))) {
-        console.log('todo OK');
         return true;
     } else {
-        console.log('no pasará');
         if (nameField.validity.valueMissing || !nameField.validity.valid || nameField.value.length > 50) {
             showErrorName();
         }

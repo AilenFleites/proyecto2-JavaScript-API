@@ -51,7 +51,6 @@ const createEmployee = () => {//capturo los valores de los inputs del form y ret
 
 const addNewEmployee = () => {
     const newEmployee = createEmployee();
-    console.log(newEmployee);
     fetch(urlBase + 'users', {
         method: 'POST',
         headers: {
@@ -60,8 +59,7 @@ const addNewEmployee = () => {
         body: JSON.stringify(newEmployee)
     })
         .then(data => {
-            console.log(data);
-            getEmployees();
+        getEmployees(data);
         })
         .catch(error => {
             console.error(error)
@@ -69,8 +67,8 @@ const addNewEmployee = () => {
 }
 
 //Esta funcion esconde el modal y resetea el form
-const formReset = () => {
-    const modal = document.getElementById('modal-add-employee');
+const formReset = (id) => {
+    const modal = document.getElementById(id);
     const m = bootstrap.Modal.getInstance(modal);
     m.hide();
     form.reset();
@@ -96,7 +94,7 @@ btnAddInForm.addEventListener('click', e => {
     e.preventDefault();
     if (validaciones() === true) {
         addNewEmployee();
-        formReset();
+        formReset('modal-add-employee');
     }
 })
 
@@ -117,7 +115,6 @@ const deleteEmployee = (id) => {
             headers: { 'Content-Type': 'application/json' }
         })
             .then(response => response.json())
-            .then(data => console.log(data))
             .then(data => getEmployees(data))
     }
 }
@@ -151,17 +148,11 @@ const fillForm = (data, id) => {
         if (validaciones() === true) {
             const user = createEmployee();
             updateEmployee(id, user);
-            resetAndHide();
+            formReset('modal-add-employee');
         }
     })
 }
 
-const resetAndHide = () => {
-    const modal = document.getElementById('modalEdit');
-    const mo = bootstrap.Modal.getInstance(modal);
-    mo.hide();
-    form.reset();
-}
 
 //Esta funcion edita los datos del empleado
 const updateEmployee = (id, user) => {
@@ -172,7 +163,6 @@ const updateEmployee = (id, user) => {
         body: JSON.stringify(editEmployee),
     })
         .then(response => response.json())
-        .then(data => console.log("se editó correctamente"))
         .then(data => getEmployees(data))
 }
 //Funcion filter
