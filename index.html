@@ -78,14 +78,31 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" id="btn-cancel"
                             data-bs-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-success" id="btn-edit"
-                            data-bs-dismiss="modal">Update</button>
+                        <button type="button" class="btn btn-success" id="btn-edit">Update</button>
                         <button type="submit" class="btn btn-success" id="btn-add" value="Add">Add</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="modalDelete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Warning!</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              Do you really want to delete this employee?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" id="cancel-delete" data-bs-dismiss="modal">No</button>
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btn-confirm-delete">Yes</button>
+            </div>
+          </div>
+        </div>
+      </div>
     <script src = "validaciones.js"></script>
     <script src="main.js"></script>
     <div class="modal fade" id="modalEdit" tabindex="-1" aria-labelledby="modalEdit" aria-hidden="true"></div>

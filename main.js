@@ -26,7 +26,8 @@ const renderTable = (data) => {
         <td> ${employee.phone} </td>
         <td> ${employee.email} </td>
         <td> <button type='button' onclick="showEmployee(${employee.id})" id="edit"> <i class="material-icons" title="Edit">&#xE254;</i></button>
-      <button type='button' onclick="deleteEmployee(${employee.id})" id="delete"> <i class="material-icons" title="Delete">&#xE872;</i></td></button>`;
+        <button type="button" data-bs-toggle="modal" data-bs-target="#modalDelete" id="delete" onclick="deleteEmployee(${employee.id})">
+        <i class="material-icons" title="Delete">&#xE872;</i></td></button>`;
         tbody.appendChild(tr);
     }
 }
@@ -87,9 +88,11 @@ btnAddEmployee.addEventListener('click', (e) => {
 })
 //Este evento ejecuta la funcion de agregar empleado al hacer click en el boton add
 btnAddInForm.addEventListener('click', e => {
-        e.preventDefault()
+        e.preventDefault();
+        if(validaciones() === true){
         addNewEmployee();
         formReset();
+        }
     })
 
 //Este evento resetea el modal al hacer click en boton cancel
@@ -102,12 +105,16 @@ btnAddInForm.addEventListener('click', e => {
 //en el boton delete de cada tr en la tabla
 
 const deleteEmployee = (id) => {
-    fetch(urlBase + 'users/' + id, {
-        method: 'DELETE',
-    })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .then(data => getEmployees());
+    const btnConfirmDelete = document.getElementById('btn-confirm-delete')
+    btnConfirmDelete.onclick = () => {
+         fetch(urlBase + 'users/' + id, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' }
+        })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .then(data => getEmployees(data))
+    }
 }
 
 // //Esta función está asociada al botón "edit", hace un pequeño GET por cada empleado, usando su ID
@@ -135,10 +142,11 @@ const fillForm = (data, id) => {
         emailField.value = data.email
     
     btnEdit.addEventListener('click', e =>{
-        e.preventDefault()
+        e.preventDefault();
         if(validaciones() === true){
         const user = createEmployee();
-        updateEmployee(id,user)}
+        updateEmployee(id,user)
+        }
     })
 }
 //Esta funcion edita los datos del empleado
@@ -150,6 +158,7 @@ const updateEmployee = (id, user) => {
         body: JSON.stringify(editEmployee),
     })
         .then(response => response.json())
+        .then(data => console.log("se editó correctamente"))
         .then(data => getEmployees(data))
 }
 //Funcion filter
@@ -163,6 +172,7 @@ const filter = () => {
                 .then(data => renderTable(data))// renderizo la tabla con esos
         }
     })
+    
 }
 
 const renderPage = () => {
