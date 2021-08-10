@@ -1,28 +1,16 @@
-"# TrabajoPractico3" 
-TP JavaScript 2: ABM (alta-baja-modificación) de Personas
-⚙️ Ejercicio
+# Proyecto: ABM (alta-baja-modificación) de Personas consumiendo una API
+
+Este proyecto fue desarrollado trabajando en conjunto con mi compañera de clase para practicar metodologías ágiles de trabajo y trabajar de forma conjunta en un mismo repositorio con branches separadas, utilizamos HTML, CSS, BOOTSTRAP y JAVASCRIPT.
+
+A continuación podrás encontrar los requerimientos en base a los cuales fue desarrollado:
+
+# Requerimientos
+
 Se debe crear una aplicación web con los siguientes requerimientos:
-Respetar el diseño propuesto en: https://ada-tp-js-2.surge.sh/
+
+- Respetar el diseño propuesto en: https://ada-tp-js-2.surge.sh/
 
 La URL de la API a utilizar es: https://5fd39ad7e9cda40016f5b79f.mockapi.io/. Si tienen una cuenta en MockApi, pueden clonarla usando https://mockapi.io/clone/5fd39ad7e9cda40016f5b7a0 (recomendado para evitar que se sature).
-
-Los endpoints que permite la misma son:
-
-GET /users?search=:q
-
-Retorna un array de personas guardadas en el servidor. Las mismas se pueden filtrar utilizando el queryParam search
-
-POST /users
-
-Crea un nuevo registro en el servidor. Si la operación terminó satisfactoriamente, devuelve el nuevo registro creado.
-
-PUT /users/:id
-
-Modifica los datos del usuario. El parámetro :id es la propiedad id del registro que queremos modificar.
-
-DELETE /users/:id
-
-Elimina un registro de la base de datos. El parámetro :id es la propiedad id del registro que queremos eliminar.
 
 Al renderizar la web, mostrar un listado con los siguientes datos:
 
@@ -72,4 +60,3 @@ Buena tabulación del código
 Usar nombres claros para las variables
 Utilizar sólo let o const
 Utilizar arrow functions
-Todas las funciones que lo permitan, deben tener tests unitarios utilizando Jest, para verificar el correcto funcionamiento
