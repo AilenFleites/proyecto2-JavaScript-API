@@ -63,7 +63,7 @@ phoneField.addEventListener('blur', () => {
 const showErrorPhone = () => {
     phoneError.className = 'error active';
     if (phoneField.validity.valueMissing) {
-        phoneError.innerHTML = 'Debería introducir un teléfono';
+        phoneError.innerHTML = 'Ingrese un número con el siguiente patrón "xxx xxx xxxx o xxx-xxx-xxxx"';
     } else if (!regExPhone.test(phoneField.value)) {
         phoneError.innerHTML = 'El dato ingresado no parece ser un teléfono';
     }

@@ -59,7 +59,7 @@ const addNewEmployee = () => {
         body: JSON.stringify(newEmployee)
     })
         .then(data => {
-        getEmployees(data);
+            getEmployees(data);
         })
         .catch(error => {
             console.error(error)
