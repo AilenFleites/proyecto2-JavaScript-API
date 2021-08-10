@@ -2,6 +2,8 @@
 
 Este proyecto fue desarrollado trabajando en conjunto con mi compañera de clase para practicar metodologías ágiles de trabajo y trabajar de forma conjunta en un mismo repositorio con branches separadas, utilizamos HTML, CSS, BOOTSTRAP y JAVASCRIPT.
 
+Deploy: https://ailenfleites.github.io/proyecto2-JavaScript-API/
+
 A continuación podrás encontrar los requerimientos en base a los cuales fue desarrollado:
 
 # Requerimientos
