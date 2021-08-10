@@ -1,6 +1,6 @@
 # Proyecto: ABM (alta-baja-modificación) de Personas consumiendo una API
 
-Este proyecto fue desarrollado trabajando en conjunto con una compañera de clase, utilizamos HTML, CSS, BOOTSTRAP y JAVASCRIPT.
+Este proyecto fue desarrollado trabajando en conjunto con mi compañera de clase, utilizamos HTML, CSS, BOOTSTRAP y JAVASCRIPT.
 
 A continuación podrás encontrar los requerimientos en base a los cuales fue desarrollado:
 
