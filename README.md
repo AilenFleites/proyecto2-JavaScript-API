@@ -1,6 +1,8 @@
-# Proyecto: ABM (alta-baja-modificación) de Personas
+# Proyecto: ABM (alta-baja-modificación) de Personas consumiendo una API
 
-A continuación podrás encontrar los requerimientos en base a los cuales desarrollé este sitio:
+Este proyecto fue desarrollado trabajando en conjunto con una compañera de clase, utilizamos HTML, CSS, BOOTSTRAP y JAVASCRIPT.
+
+A continuación podrás encontrar los requerimientos en base a los cuales fue desarrollado:
 
 # Requerimientos
 
